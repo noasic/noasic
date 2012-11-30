@@ -104,6 +104,20 @@ architecture RTL of tb_random_pkg is
     report "test_randwait completed in " & integer'image(v_iterations_count) & " iterations." severity note;
   end procedure;
 
+  -- Tests the random_pkg.randint_array() function: verify that the generated 
+  -- values are within the specified range.
+  procedure test_randint_array is
+    constant LENGTH        : positive                     := 1024;
+    constant MIN           : integer                      := -1024;
+    constant MAX           : integer                      := 1024;
+    constant RANDINT_ARRAY : t_int_array(0 to LENGTH - 1) := randint_array(LENGTH, MIN, MAX);
+  begin
+    for i in RANDINT_ARRAY'range loop
+      assert RANDINT_ARRAY(i) >= MIN and RANDINT_ARRAY(i) <= MAX report "generated value is out of range." severity failure;
+    end loop;
+    report "test_randint_array completed (first value: " & integer'image(RANDINT_ARRAY(0)) & ", last value: " & integer'image(RANDINT_ARRAY(LENGTH - 1)) & ")" severity note;
+  end procedure;
+
   constant CLOCK_PERIOD : time      := 2 ps;
   signal s_clk          : std_logic := '0';
 
@@ -114,6 +128,7 @@ begin
   begin
     test_randint;
     test_randwait(s_clk, CLOCK_PERIOD);
+    test_randint_array;
     report "simulation completed (not an error)" severity failure;
     wait;
   end process;

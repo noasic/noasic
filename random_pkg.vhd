@@ -45,8 +45,14 @@ use ieee.math_real.all;
 
 package random_pkg is
 
+  -- An array of integers
+  type t_int_array is array (natural range <>) of integer;
+
   -- Returns a random integer in the range [min, max]
-  impure function randint(min : integer; max : integer) return integer;
+  impure function randint(min, max : integer) return integer;
+
+  -- Returns an array of random integers in the range [min, max]
+  impure function randint_array(length : positive; min, max : integer) return t_int_array;
 
   -- Waits for a random number of clock cycles
   procedure randwait(signal clk : in std_logic; min, max : in natural);
@@ -56,12 +62,12 @@ end package random_pkg;
 package body random_pkg is
   type t_random is protected
     -- Returns a random integer in the range [min, max]
-    impure function randint(min : integer; max : integer) return integer;
+    impure function randint(min, max : integer) return integer;
   end protected;
 
   type t_random is protected body
     variable v_seed_1, v_seed_2 : positive := 1;
-    impure function randint(min : integer; max : integer) return integer is
+    impure function randint(min, max : integer) return integer is
       variable v_rand_real : real;
       variable v_rand_int  : integer;
     begin
@@ -75,9 +81,18 @@ package body random_pkg is
 
   shared variable random : t_random;
 
-  impure function randint(min : integer; max : integer) return integer is
+  impure function randint(min, max : integer) return integer is
   begin
     return random.randint(min, max);
+  end function;
+
+  impure function randint_array(length : positive; min, max : integer) return t_int_array is
+    variable v_result : t_int_array(0 to length - 1);
+  begin
+    for i in v_result'range loop
+      v_result(i) := randint(min, max);
+    end loop;
+    return v_result;
   end function;
 
   procedure randwait(signal clk : in std_logic; min, max : in natural) is
