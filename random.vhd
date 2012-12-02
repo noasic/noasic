@@ -1,15 +1,8 @@
 -------------------------------------------------------------------------------
 --
---  A collection of utilities related to random-value generation.
+--  A collection of functions for generating random values.
 --
 --  This file is part of the noasic library.
---
---  Usage:
---    use work.random_pkg.all;
---    ...
---    i := randint(min => 0, max => 1023); -- generate a random integer in range [0..1023]
---    ... 
---    randwait(clk => s_clk, min => 0, max => 5); -- wait for [0..5] clock cycles
 --
 --  Author(s):
 --    Guy Eschemann, Guy.Eschemann@gmail.com
@@ -43,7 +36,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.math_real.all;
 
-package random_pkg is
+package random is
 
   -- An array of integers
   type t_int_array is array (natural range <>) of integer;
@@ -57,9 +50,9 @@ package random_pkg is
   -- Waits for a random number of clock cycles
   procedure randwait(signal clk : in std_logic; min, max : in natural);
 
-end package random_pkg;
+end package random;
 
-package body random_pkg is
+package body random is
   type t_random is protected
     -- Returns a random integer in the range [min, max]
     impure function randint(min, max : integer) return integer;
@@ -105,4 +98,4 @@ package body random_pkg is
     end loop;
   end procedure;
 
-end package body random_pkg;
+end package body random;

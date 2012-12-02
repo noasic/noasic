@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 --
---  Testbench for the random_pkg package.
+--  Testbench for the 'random' package.
 --
 --  This file is part of the noasic library.
 --
@@ -34,12 +34,12 @@
 library ieee;
 
 use ieee.std_logic_1164.all;
-use work.random_pkg.all;
+use work.random.all;
 
-entity tb_random_pkg is
-end entity tb_random_pkg;
+entity tb_random is
+end entity tb_random;
 
-architecture RTL of tb_random_pkg is
+architecture RTL of tb_random is
   type t_integer_array is array (integer range <>) of integer;
 
   -- Tests the random_pkg.randint() function: execute the randint() 
