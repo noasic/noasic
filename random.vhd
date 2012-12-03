@@ -72,11 +72,11 @@ package body random is
     end function;
   end protected body;
 
-  shared variable random : t_random;
+  shared variable sv_random : t_random;
 
   impure function randint(min, max : integer) return integer is
   begin
-    return random.randint(min, max);
+    return sv_random.randint(min, max);
   end function;
 
   impure function randint_array(length : positive; min, max : integer) return t_int_array is
