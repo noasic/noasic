@@ -35,6 +35,7 @@ library ieee;
 
 use ieee.std_logic_1164.all;
 use work.log2.all;
+use work.print.all;
 
 entity tb_log2 is
 end entity tb_log2;
@@ -56,7 +57,9 @@ begin
   p_test : process
   begin
     test_log2;
-    report "simulation completed (not an error)" severity failure;
+    print("---------------------------------");
+    print("Simulation completed successfully");
+    print("---------------------------------");
     wait;
   end process;
 
