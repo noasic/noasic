@@ -35,6 +35,7 @@ library ieee;
 
 use ieee.std_logic_1164.all;
 use work.random.all;
+use work.print.all;
 
 entity tb_random is
 end entity tb_random;
@@ -119,17 +120,22 @@ architecture RTL of tb_random is
   end procedure;
 
   constant CLOCK_PERIOD : time      := 2 ps;
+  signal s_clk_en       : std_logic;    -- := '1';
   signal s_clk          : std_logic := '0';
 
 begin
-  s_clk <= not s_clk after CLOCK_PERIOD / 2;
+  s_clk <= (not s_clk) and s_clk_en after CLOCK_PERIOD / 2;
 
   p_test : process
   begin
+    s_clk_en <= '1';
     test_randint;
     test_randwait(s_clk, CLOCK_PERIOD);
     test_randint_array;
-    report "simulation completed (not an error)" severity failure;
+    s_clk_en <= '0';                    -- disable the clock to stop the simulation
+    print("---------------------------------");
+    print("Simulation completed successfully");
+    print("---------------------------------");
     wait;
   end process;
 

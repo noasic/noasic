@@ -34,7 +34,9 @@
 library ieee;
 
 use ieee.std_logic_1164.all;
+use std.textio.all;
 use work.str.all;
+use work.print.all;
 
 entity tb_str is
 end entity tb_str;
@@ -77,7 +79,9 @@ begin
   begin
     test_hstr_std_logic_vector;
     test_str_integer;
-    report "simulation completed (not an error)" severity failure;
+    print("---------------------------------");
+    print("Simulation completed successfully");
+    print("---------------------------------");
     wait;
   end process;
 
