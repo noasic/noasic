@@ -1,5 +1,5 @@
 
-An open-source VHDL library for FPGA design, licensed under the GNU LESSER GENERAL PUBLIC LICENSE.
+An open-source VHDL library for FPGA design, licensed under the GNU lesser general public license.
 
 Naming Conventions
 ------------------  
