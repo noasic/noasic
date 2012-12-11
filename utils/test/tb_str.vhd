@@ -34,6 +34,7 @@
 library ieee;
 
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 use std.textio.all;
 use work.str.all;
 use work.print.all;
@@ -74,11 +75,18 @@ architecture RTL of tb_str is
     assert str(2147483647) = "2147483647" severity failure;
   end procedure;
 
+  procedure test_str_unsigned is
+  begin
+    assert str(unsigned(x"7fffffff")) = "2147483647" severity failure;
+    assert str(unsigned(x"0")) = "0" severity failure;
+  end procedure;
+
 begin
   p_test : process
   begin
     test_hstr_std_logic_vector;
     test_str_integer;
+    test_str_unsigned;
     print("---------------------------------");
     print("Simulation completed successfully");
     print("---------------------------------");

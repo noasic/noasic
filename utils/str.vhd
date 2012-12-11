@@ -35,6 +35,7 @@ library ieee;
 
 use ieee.std_logic_1164.all;
 use ieee.std_logic_textio.all;
+use ieee.numeric_std.all;
 use std.textio.all;
 
 package str is
@@ -50,6 +51,9 @@ package str is
 
   -- boolean -> string
   function str(value : boolean) return string;
+
+  -- unsigned -> string
+  function str(value : unsigned) return string;
 
 end package str;
 
@@ -100,6 +104,11 @@ package body str is
   function str(value : boolean) return string is
   begin
     return boolean'image(value);
+  end function;
+
+  function str(value : unsigned) return string is
+  begin
+    return str(to_integer(value));
   end function;
 
 end package body str;
