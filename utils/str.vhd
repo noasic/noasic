@@ -45,6 +45,12 @@ package str is
   -- integer -> string
   function str(val : integer) return string;
 
+  -- std_logic -> string
+  function str(value : std_logic) return string;
+
+  -- boolean -> string
+  function str(value : boolean) return string;
+
 end package str;
 
 package body str is
@@ -66,6 +72,34 @@ package body str is
   function str(val : integer) return string is
   begin
     return integer'image(val);
+  end function;
+
+  -- std_logic -> character
+  function char(value : std_logic) return character is
+  begin
+    case value is
+      when 'U' => return 'U';
+      when 'X' => return 'X';
+      when '0' => return '0';
+      when '1' => return '1';
+      when 'Z' => return 'Z';
+      when 'W' => return 'W';
+      when 'L' => return 'L';
+      when 'H' => return 'H';
+      when '-' => return '-';
+    end case;
+  end function;
+
+  function str(value : std_logic) return string is
+    variable v_str : string(1 to 1);
+  begin
+    v_str(1) := char(value);
+    return v_str;
+  end function;
+
+  function str(value : boolean) return string is
+  begin
+    return boolean'image(value);
   end function;
 
 end package body str;
