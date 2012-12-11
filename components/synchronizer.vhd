@@ -94,7 +94,7 @@ begin
       s_data_guard_r <= (others => G_INIT_VALUE);
 
     elsif rising_edge(i_clk) then
-      sync_ffs : s_data_sync_r <= i_data;
+      sync_ff : s_data_sync_r <= i_data;
       guard_ffs : if s_data_guard_r'length = 1 then
         s_data_guard_r(0) <= s_data_sync_r; -- avoid "Range is empty (null range)" warnings:
       else
