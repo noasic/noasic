@@ -9,6 +9,9 @@
 --    to a destination clock domain using a chain of flip-flops (synchronizer
 --    FF followed by one or more guard FFs).
 --
+--  See also:
+--    * http://noasic.com/blog/how-not-to-design-a-2dff-synchronizer/
+--
 --  Author(s):
 --    Guy Eschemann, Guy.Eschemann@gmail.com
 --
@@ -63,12 +66,17 @@ architecture RTL of synchronizer is
   -- Attributes
   --
 
-  -- shreg_extract: disable shift-register extraction on s_data_guard_r
-  -- when the reset input is tied to '0' (see Xilinx UG687).
+  -- Synplify Pro: disable shift-register LUT (SRL) extraction
+  attribute syn_srlstyle : string;
+  attribute syn_srlstyle of s_data_sync_r : signal is "registers";
+  attribute syn_srlstyle of s_data_guard_r : signal is "registers";
+
+  -- Xilinx XST: disable shift-register LUT (SRL) extraction
   attribute shreg_extract : string;
+  attribute shreg_extract of s_data_sync_r : signal is "no";
   attribute shreg_extract of s_data_guard_r : signal is "no";
 
-  -- ASYNC_REG: disables X propagation during timing simulation. In the event of 
+  -- Disable X propagation during timing simulation. In the event of 
   -- a timing violation, the previous value is retained on the output instead 
   -- of going unknown (see Xilinx UG625)
   attribute ASYNC_REG : string;
