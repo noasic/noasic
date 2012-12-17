@@ -43,6 +43,9 @@ package str is
   -- std_logic_vector -> hex string
   function hstr(val : std_logic_vector) return string;
 
+  -- unsigned -> hex string
+  function hstr(val : unsigned) return string;
+
   -- integer -> string
   function str(val : integer) return string;
 
@@ -70,7 +73,12 @@ package body str is
     v_val                          := (others => '0');
     v_val(val'length - 1 downto 0) := val;
     hwrite(v_line, v_val);
-    return v_line.all;
+    return string'("0x") & v_line.all;
+  end function;
+
+  function hstr(val : unsigned) return string is
+  begin
+    return hstr(std_logic_vector(val));
   end function;
 
   function str(val : integer) return string is

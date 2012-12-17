@@ -47,25 +47,25 @@ architecture RTL of tb_str is
   -- Tests the hstr(std_logic_vector) function
   procedure test_hstr_std_logic_vector is
   begin
-    assert hstr("0") = "0" severity failure;
-    assert hstr("1") = "1" severity failure;
-    assert hstr("00") = "0" severity failure;
-    assert hstr("01") = "1" severity failure;
-    assert hstr("10") = "2" severity failure;
-    assert hstr("11") = "3" severity failure;
-    assert hstr("100") = "4" severity failure;
-    assert hstr("101") = "5" severity failure;
-    assert hstr("110") = "6" severity failure;
-    assert hstr("111") = "7" severity failure;
-    assert hstr("1000") = "8" severity failure;
-    assert hstr("1001") = "9" severity failure;
-    assert hstr("1010") = "A" severity failure;
-    assert hstr("1011") = "B" severity failure;
-    assert hstr("1100") = "C" severity failure;
-    assert hstr("1101") = "D" severity failure;
-    assert hstr("1110") = "E" severity failure;
-    assert hstr("1111") = "F" severity failure;
-    assert hstr("00010010001101000101011001111000") = "12345678" severity failure;
+    assert hstr(std_logic_vector'("0")) = "0x0" severity failure;
+    assert hstr(std_logic_vector'("1")) = "0x1" severity failure;
+    assert hstr(std_logic_vector'("00")) = "0x0" severity failure;
+    assert hstr(std_logic_vector'("01")) = "0x1" severity failure;
+    assert hstr(std_logic_vector'("10")) = "0x2" severity failure;
+    assert hstr(std_logic_vector'("11")) = "0x3" severity failure;
+    assert hstr(std_logic_vector'("100")) = "0x4" severity failure;
+    assert hstr(std_logic_vector'("101")) = "0x5" severity failure;
+    assert hstr(std_logic_vector'("110")) = "0x6" severity failure;
+    assert hstr(std_logic_vector'("111")) = "0x7" severity failure;
+    assert hstr(std_logic_vector'("1000")) = "0x8" severity failure;
+    assert hstr(std_logic_vector'("1001")) = "0x9" severity failure;
+    assert hstr(std_logic_vector'("1010")) = "0xA" severity failure;
+    assert hstr(std_logic_vector'("1011")) = "0xB" severity failure;
+    assert hstr(std_logic_vector'("1100")) = "0xC" severity failure;
+    assert hstr(std_logic_vector'("1101")) = "0xD" severity failure;
+    assert hstr(std_logic_vector'("1110")) = "0xE" severity failure;
+    assert hstr(std_logic_vector'("1111")) = "0xF" severity failure;
+    assert hstr(std_logic_vector'("00010010001101000101011001111000")) = "0x12345678" severity failure;
   end procedure;
 
   procedure test_str_integer is
