@@ -58,6 +58,9 @@ package str is
   -- unsigned -> string
   function str(value : unsigned) return string;
 
+  -- std_logic_vector -> (unsigned) integer string
+  function str(val : std_logic_vector) return string;
+
 end package str;
 
 package body str is
@@ -117,6 +120,11 @@ package body str is
   function str(value : unsigned) return string is
   begin
     return str(to_integer(value));
+  end function;
+
+  function str(val : std_logic_vector) return string is
+  begin
+    return str(unsigned(val));
   end function;
 
 end package body str;
