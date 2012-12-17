@@ -41,7 +41,11 @@ use ieee.std_logic_1164.all;
 
 entity edge_detector is
   generic(
+<<<<<<< HEAD
     G_EDGE_TYPE  : string    := "RISING"; -- edge polarity
+=======
+    G_EDGE_TYPE  : string    := "RISING"; -- "RISING", "FALLING" or "BOTH"
+>>>>>>> 150aec37f99ab2e6a3f637438ccf96854f5ab7c9
     G_INIT_LEVEL : std_logic := '0'     -- default level of the input data line
   );
   port(
