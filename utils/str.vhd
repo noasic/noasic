@@ -85,8 +85,10 @@ package body str is
   end function;
 
   function str(val : integer) return string is
+    variable ln : line;
   begin
-    return integer'image(val);
+    write(ln, val);
+    return ln.all; -- note: simply returning integer'image(val) yields a "Expression is not constant" error in Xilinx XST
   end function;
 
   -- std_logic -> character
