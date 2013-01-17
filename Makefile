@@ -7,6 +7,7 @@
 ##  Targets:
 ##    compile   - compile the design in the simulator
 ##    synthesis - synthesize the components using Xilinx XST
+##    all       - perform a full build (compilation, synthesis)
 ##    clean     - delete all output files
 ##
 ##  Author(s):
@@ -37,14 +38,14 @@
 ##-----------------------------------------------------------------------------
 
 VCOM = vcom
+VSIM = vsim
 VLIB = vlib
 VCOM_OPTS = -2002 -d work
 XILINX = C:/Xilinx/14.3/ISE_DS
 
 XST = $(XILINX)/ISE/bin/nt64/xst.exe
 
-.PHONY: compile, synthesize, all, clean
-
+.PHONY: compile
 compile:
 	$(VLIB) noasic work/noasic.lib
 	$(VCOM) $(VCOM_OPTS) -work noasic utils/frequency.vhd
@@ -55,13 +56,28 @@ compile:
 	$(VCOM) $(VCOM_OPTS) -work noasic utils/random.vhd	
 	$(VCOM) $(VCOM_OPTS) -work noasic components/edge_detector.vhd
 	$(VCOM) $(VCOM_OPTS) -work noasic components/synchronizer.vhd
+	
+	$(VCOM) $(VCOM_OPTS) -work noasic test/tb_frequency.vhd	
+	$(VCOM) $(VCOM_OPTS) -work noasic test/tb_log2.vhd	
+	$(VCOM) $(VCOM_OPTS) -work noasic test/tb_random.vhd	
+	$(VCOM) $(VCOM_OPTS) -work noasic test/tb_str.vhd	
 
+.PHONY: test
+test:
+	$(VSIM) -c noasic.tb_frequency -do "run -all; quit -code 0"
+	$(VSIM) -c noasic.tb_log2 -do "run -all; quit -code 0"
+	$(VSIM) -c noasic.tb_random -do "run -all; quit -code 0"
+	$(VSIM) -c noasic.tb_str -do "run -all; quit -code 0"
+	
+.PHONY: synthesize	
 synthesize:
 	echo run -ifn components/edge_detector.vhd -ifmt VHDL -ofn edge_detector.ngc -p Spartan6 | $(XST)
 	echo run -ifn components/synchronizer.vhd -ifmt VHDL -ofn synchronizer.ngc -p Spartan6 | $(XST)
 
-all: compile synthesize
+.PHONY: all
+all: compile test synthesize
 	
+.PHONY: clean
 clean:
 	-rm -rf library.cfg
 	-rm -rf workspace/xilinx/xst/*.lso
@@ -70,6 +86,7 @@ clean:
 	-rm -rf _xmsgs
 	-rm -f ./edge_detector*.*
 	-rm -f ./synchronizer*.*
+	-rm -f *.asdb
 
 
 	
