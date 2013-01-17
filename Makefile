@@ -4,6 +4,11 @@
 ##
 ##  This file is part of the noasic library.
 ##
+##  Targets:
+##    compile   - compile the design in the simulator
+##    synthesis - synthesize the components using Xilinx XST
+##    clean     - delete all output files
+##
 ##  Author(s):
 ##    Guy Eschemann, Guy.Eschemann@gmail.com
 ##
@@ -34,6 +39,10 @@
 VCOM = vcom
 VLIB = vlib
 VCOM_OPTS = -2002 -d work
+XILINX = C:\Xilinx\14.3\ISE_DS
+XST = xst
+
+.PHONY: compile, synthesize, clean
 
 compile:
 	$(VLIB) noasic work/noasic.lib
@@ -45,12 +54,20 @@ compile:
 	$(VCOM) $(VCOM_OPTS) -work noasic utils/random.vhd	
 	$(VCOM) $(VCOM_OPTS) -work noasic components/edge_detector.vhd
 	$(VCOM) $(VCOM_OPTS) -work noasic components/synchronizer.vhd
-	
-.PHONY : \
-	clean \
-	all
+
+synthesize:
+	$(XILINX)/settings64.bat
+	cd workspace/xilinx/xst && $(XST) -ifn edge_detector.xst -ofn out/log/edge_detector.srp
+	cd workspace/xilinx/xst && $(XST) -ifn synchronizer.xst -ofn out/log/synchronizer.srp
 
 clean:
-	rm -f library.cfg
-	rm -rf work
+	-rm -rf library.cfg
+	-rm -rf workspace/xilinx/xst/*.lso
+	-rm -rf work
+	-rm -rf workspace/xilinx/xst/_xmsgs
+	-rm -rf workspace/xilinx/xst/xst
+	-rm -f workspace/xilinx/xst/out/netlist/*.*
+	-rm -f workspace/xilinx/xst/out/log/*.*
+	
+	
 	

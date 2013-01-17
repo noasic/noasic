@@ -1,0 +1,5 @@
+run
+-p spartan6
+-ifn edge_detector.prj	
+-ofn out/netlist/edge_detector.ngc
+-top edge_detector
