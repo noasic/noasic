@@ -1,5 +1,0 @@
-run
--p spartan6
--ifn synchronizer.prj	
--ofn out/netlist/edge_synchronizer.ngc
--top synchronizer

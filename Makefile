@@ -39,11 +39,11 @@
 VCOM = vcom
 VLIB = vlib
 VCOM_OPTS = -2002 -d work
-XILINX = C:/Xilinx/14.3/ISE_DS
+XILINX = C:\Xilinx\14.3\ISE_DS
 
-XST = $(XILINX)/ISE/bin/nt64/xst.exe
+XST = $(XILINX)\ISE\bin\nt64\xst.exe
 
-.PHONY: compile, synthesize, clean
+.PHONY: compile, synthesize, all, clean
 
 compile:
 	$(VLIB) noasic work/noasic.lib
@@ -57,18 +57,21 @@ compile:
 	$(VCOM) $(VCOM_OPTS) -work noasic components/synchronizer.vhd
 
 synthesize:
-	cd workspace/xilinx/xst && $(XST) -ifn edge_detector.xst -ofn out/log/edge_detector.srp
-	cd workspace/xilinx/xst && $(XST) -ifn synchronizer.xst -ofn out/log/synchronizer.srp
+	echo run -ifn components/edge_detector.vhd -ifmt VHDL -ofn edge_detector.ngc -p Spartan6 | $(XST)
+	echo run -ifn components/synchronizer.vhd -ifmt VHDL -ofn synchronizer.ngc -p Spartan6 | $(XST)
+
+all: compile synthesize
 	
 clean:
 	-rm -rf library.cfg
 	-rm -rf workspace/xilinx/xst/*.lso
 	-rm -rf work
-	-rm -rf workspace/xilinx/xst/_xmsgs
-	-rm -rf workspace/xilinx/xst/xst
-	-rm -f workspace/xilinx/xst/out/netlist/*.ngc
-	-rm -f workspace/xilinx/xst/out/netlist/*.xrpt
-	-rm -f workspace/xilinx/xst/out/log/*.srp
+	-rm -rf xst
+	-rm -rf _xmsgs
+	-rm -f ./edge_detector*.*
+	-rm -f ./synchronizer*.*
+
+
 	
 	
 	
