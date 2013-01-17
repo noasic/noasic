@@ -66,8 +66,9 @@ clean:
 	-rm -rf work
 	-rm -rf workspace/xilinx/xst/_xmsgs
 	-rm -rf workspace/xilinx/xst/xst
-	-rm -f workspace/xilinx/xst/out/netlist/*.*
-	-rm -f workspace/xilinx/xst/out/log/*.*
+	-rm -f workspace/xilinx/xst/out/netlist/*.ngc
+	-rm -f workspace/xilinx/xst/out/netlist/*.xrpt
+	-rm -f workspace/xilinx/xst/out/log/*.srp
 	
 	
 	
