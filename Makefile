@@ -39,9 +39,9 @@
 VCOM = vcom
 VLIB = vlib
 VCOM_OPTS = -2002 -d work
-XILINX = C:\Xilinx\14.3\ISE_DS
+XILINX = C:/Xilinx/14.3/ISE_DS
 
-XST = $(XILINX)\ISE\bin\nt64\xst.exe
+XST = $(XILINX)/ISE/bin/nt64/xst.exe
 
 .PHONY: compile, synthesize, all, clean
 
