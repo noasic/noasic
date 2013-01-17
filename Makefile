@@ -56,10 +56,9 @@ compile:
 	$(VCOM) $(VCOM_OPTS) -work noasic components/synchronizer.vhd
 
 synthesize:
-	$(XILINX)/settings64.bat
 	cd workspace/xilinx/xst && $(XST) -ifn edge_detector.xst -ofn out/log/edge_detector.srp
 	cd workspace/xilinx/xst && $(XST) -ifn synchronizer.xst -ofn out/log/synchronizer.srp
-
+	
 clean:
 	-rm -rf library.cfg
 	-rm -rf workspace/xilinx/xst/*.lso
