@@ -36,96 +36,50 @@
 --------------------------------------------------------------------------------
 
 library ieee;
-
 use ieee.std_logic_1164.all;
---use ieee.numeric_std.all;
---use ieee.std_logic_textio.all;
---use std.textio.all;
---use work.str.all;
 
 package logging is
 
-  -- The possible logging levels
-  type t_logging_level is (DEBUG, INFO, WARNING, ERROR, FAILURE);
+  -- Initialize the logging framework, i.e. declare the loggers and their 
+  -- associated logging levels
+  procedure init(config_filename : string);
 
-  -- Each logger has a unique logger ID
-  subtype t_logger is natural;
-
-  -- Create a new logger
-  impure function logger(name : string; level : t_logging_level := INFO) return t_logger;
-
-  -- Set the current logging level of a given logger. Messages with lower 
-  -- logging levels than the current level will not be printed on the console.  
-  procedure set_logging_level(logger : t_logger; level : t_logging_level);
-
-  -- Log a DEBUG message
-  procedure debug(logger : t_logger; message : string);
-
-  -- Log an INFO message
-  procedure info(logger : t_logger; message : string);
-
-  -- Log a WARNING message
-  procedure warning(logger : t_logger; message : string);
-
-  -- Log an ERROR message
-  procedure error(logger : t_logger; message : string);
-
-  -- Log a FAILURE message, and terminates the simulation
-  procedure failure(logger : t_logger; message : string; terminate : boolean := true);
-
-  -- Print the statistics (number of failures, errors, warnings)
-  procedure printstats;
-
-  -- Configurate logging levels using a configuration text file which is 
-  -- formatted as follows: <logger_name> <logging_level>
-  procedure init_logging_levels(config_file_path : string);
+  -- The actual logging procedures:
+  procedure debug(logger : string; message : string);
+  procedure info(logger : string; message : string);
+  procedure warning(logger : string; message : string);
+  procedure error(logger : string; message : string);
+  procedure failure(logger : string; message : string);
 
 end package logging;
 
 package body logging is
-  constant INVALID_LOGGER : t_logger := t_logger'high;
-
-  impure function logger(name : string; level : t_logging_level := INFO) return t_logger is
-  begin
-    return INVALID_LOGGER;
-  end function;
-
-  procedure set_logging_level(logger : t_logger; level : t_logging_level) is
+  procedure init(config_filename : string) is
   begin
     null;
   end procedure;
 
-  procedure debug(logger : t_logger; message : string) is
+  procedure debug(logger : string; message : string) is
   begin
     null;
   end procedure;
 
-  procedure info(logger : t_logger; message : string) is
+  procedure info(logger : string; message : string) is
   begin
     null;
   end procedure;
 
-  procedure warning(logger : t_logger; message : string) is
+  procedure warning(logger : string; message : string) is
   begin
     null;
   end procedure;
 
-  procedure error(logger : t_logger; message : string) is
+  procedure error(logger : string; message : string) is
   begin
     null;
   end procedure;
 
-  procedure failure(logger : t_logger; message : string; terminate : boolean := true) is
-  begin
-    null;
-  end procedure;
-
-  procedure printstats is
-  begin
-    null;
-  end procedure;
-
-  procedure init_logging_levels(config_file_path : string) is
+  procedure failure(logger : string; message : string) is
   begin
     null;
   end procedure;

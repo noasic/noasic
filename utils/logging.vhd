@@ -4,6 +4,9 @@
 --
 --  This file is part of the noasic library.
 --
+--  Dependencies:
+--    * txtutils package
+--
 --  Author(s):
 --    Guy Eschemann, Guy.Eschemann@gmail.com
 --
