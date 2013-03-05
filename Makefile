@@ -6,7 +6,7 @@
 ##
 ##  Targets:
 ##    compile   - compile the design in the simulator
-##    synthesis - synthesize the components using Xilinx XST
+##    synthesis - netlist the components using Xilinx XST
 ##    all       - perform a full build (compilation, synthesis)
 ##    clean     - delete all output files
 ##
@@ -41,9 +41,21 @@ VCOM = vcom
 VSIM = vsim
 VLIB = vlib
 VCOM_OPTS = -2002 -d work
-XILINX = C:/Xilinx/14.3/ISE_DS
 
-XST = $(XILINX)/ISE/bin/nt64/xst.exe
+XST = "C:/Xilinx/14.3/ISE_DS/ISE/bin/nt64/xst.exe"
+
+.PHONY: help
+help:
+	@echo.
+	@echo Makefile for the noasic library
+	@echo.
+	@echo Supported targets:
+	@echo.
+	@echo   help           : display this message
+	@echo   compile        : compile the source files in the simulator
+	@echo   test           : run the testbenches in the simulator
+	@echo   netlist        : synthesize the design using Xilinx XST
+	@echo   clean          : delete all generated files/directories
 
 .PHONY: compile
 compile:
@@ -51,6 +63,7 @@ compile:
 	$(VCOM) $(VCOM_OPTS) -work noasic utils/frequency.vhd
 	$(VCOM) $(VCOM_OPTS) -work noasic utils/log2.vhd
 	$(VCOM) $(VCOM_OPTS) -work noasic utils/str.vhd	
+	$(VCOM) $(VCOM_OPTS) -work noasic utils/txtutils.vhd
 	$(VCOM) $(VCOM_OPTS) -work noasic utils/logging.vhd
 	$(VCOM) $(VCOM_OPTS) -work noasic utils/print.vhd
 	$(VCOM) $(VCOM_OPTS) -work noasic utils/random.vhd	
@@ -61,6 +74,7 @@ compile:
 	$(VCOM) $(VCOM_OPTS) -work noasic test/tb_log2.vhd	
 	$(VCOM) $(VCOM_OPTS) -work noasic test/tb_random.vhd	
 	$(VCOM) $(VCOM_OPTS) -work noasic test/tb_str.vhd	
+	$(VCOM) $(VCOM_OPTS) -work noasic test/tb_logging.vhd
 
 .PHONY: test
 test:
@@ -68,14 +82,12 @@ test:
 	$(VSIM) -c noasic.tb_log2 -do "run -all; quit -code 0"
 	$(VSIM) -c noasic.tb_random -do "run -all; quit -code 0"
 	$(VSIM) -c noasic.tb_str -do "run -all; quit -code 0"
+	$(VSIM) -c noasic.tb_logging -do "run -all; quit -code 0"
 	
-.PHONY: synthesize	
-synthesize:
+.PHONY: netlist	
+netlist:
 	echo run -ifn components/edge_detector.vhd -ifmt VHDL -ofn edge_detector.ngc -p Spartan6 | $(XST)
 	echo run -ifn components/synchronizer.vhd -ifmt VHDL -ofn synchronizer.ngc -p Spartan6 | $(XST)
-
-.PHONY: all
-all: compile test synthesize
 	
 .PHONY: clean
 clean:
