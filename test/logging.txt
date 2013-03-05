@@ -1,0 +1,10 @@
+logger1
+debug
+logger2
+info
+logger3
+warning
+logger4
+error
+logger5
+failure

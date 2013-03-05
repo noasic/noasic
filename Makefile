@@ -89,6 +89,7 @@ clean:
 	-rm -f *.asdb
 	-rm -f *.mgf
 	-rm -f *.lib
+	-rm -rf compile/
 
 
 	
