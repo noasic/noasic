@@ -40,7 +40,7 @@ use work.print.all;
 entity tb_random is
 end entity tb_random;
 
-architecture RTL of tb_random is
+architecture test of tb_random is
   type t_integer_array is array (integer range <>) of integer;
 
   -- Tests the random_pkg.randint() function: execute the randint() 
@@ -111,7 +111,7 @@ architecture RTL of tb_random is
     constant LENGTH        : positive                     := 1024;
     constant MIN           : integer                      := -1024;
     constant MAX           : integer                      := 1024;
-    constant RANDINT_ARRAY : t_int_array(0 to LENGTH - 1) := randint_array(LENGTH, MIN, MAX);
+    constant RANDINT_ARRAY : t_int_array(0 to LENGTH - 1) := RANDINT_ARRAY(LENGTH, MIN, MAX);
   begin
     for i in RANDINT_ARRAY'range loop
       assert RANDINT_ARRAY(i) >= MIN and RANDINT_ARRAY(i) <= MAX report "generated value is out of range." severity failure;
@@ -139,4 +139,4 @@ begin
     wait;
   end process;
 
-end architecture RTL;
+end architecture test;

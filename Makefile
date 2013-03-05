@@ -87,6 +87,8 @@ clean:
 	-rm -f ./edge_detector*.*
 	-rm -f ./synchronizer*.*
 	-rm -f *.asdb
+	-rm -f *.mgf
+	-rm -f *.lib
 
 
 	
