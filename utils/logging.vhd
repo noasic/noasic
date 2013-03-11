@@ -42,9 +42,6 @@ use work.txtutils.all;
 
 package logging is
 
-  -- The allowed logging levels
-  type t_logging_level is (DEBUG, INFO, WARNING, ERROR, FAILURE);
-
   -- Initialize the logging framework, i.e. declare the loggers and their 
   -- associated logging levels
   procedure init(config_filename : string);
@@ -65,6 +62,10 @@ package logging is
 end package logging;
 
 package body logging is
+
+  -- The allowed logging levels
+  type t_logging_level is (DEBUG, INFO, WARNING, ERROR, FAILURE);
+
   type t_config_entry is record
     logger : string(1 to MAX_STRING_LENGTH);
     level  : t_logging_level;
@@ -127,8 +128,7 @@ package body logging is
           return v_config_entries(i).level;
         end if;
       end loop;
-      report "ERROR: could not find logger " & logger severity failure;
-      return DEBUG;                     -- only to prevent ModelSim warning that the function may complete without a return
+      return DEBUG;                     -- unknown logger -> use lowest-possible logging level
     end function;
 
   end protected body;
