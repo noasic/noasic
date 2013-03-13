@@ -7,6 +7,9 @@
 --  Dependencies:
 --    * txtutils package
 --
+--  See also:
+--    * http://noasic.com/blog/adding-logging-to-a-vhdl-simulation/
+--
 --  Author(s):
 --    Guy Eschemann, Guy.Eschemann@gmail.com
 --
