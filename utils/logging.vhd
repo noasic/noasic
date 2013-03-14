@@ -66,6 +66,8 @@ end package logging;
 
 package body logging is
 
+  -- pragma translate_off
+
   -- The allowed logging levels
   type t_logging_level is (DEBUG, INFO, WARNING, ERROR, FAILURE);
 
@@ -153,44 +155,58 @@ package body logging is
 
   shared variable sv_config : t_logging;
 
+  -- pragma translate_on
+
   procedure init(config_filename : string) is
   begin
+    -- pragma translate_off
     sv_config.init(config_filename);
+  -- pragma translate_on    
   end procedure;
 
   procedure debug(logger : string; message : string) is
   begin
+    -- pragma translate_off
     if sv_config.get_level(logger) <= DEBUG then
       sv_config.trace("DEBUG", logger, message);
     end if;
+  -- pragma translate_on    
   end procedure;
 
   procedure info(logger : string; message : string) is
   begin
+    -- pragma translate_off  
     if sv_config.get_level(logger) <= INFO then
       sv_config.trace("INFO", logger, message);
     end if;
+  -- pragma translate_on    
   end procedure;
 
   procedure warning(logger : string; message : string) is
   begin
+    -- pragma translate_off  
     if sv_config.get_level(logger) <= WARNING then
       sv_config.trace("WARNING", logger, message);
     end if;
+  -- pragma translate_on    
   end procedure;
 
   procedure error(logger : string; message : string) is
   begin
+    -- pragma translate_off  
     if sv_config.get_level(logger) <= ERROR then
       sv_config.trace("ERROR", logger, message);
     end if;
+  -- pragma translate_on    
   end procedure;
 
   procedure failure(logger : string; message : string) is
   begin
+    -- pragma translate_off  
     if sv_config.get_level(logger) <= FAILURE then
       sv_config.trace("FAILURE", logger, message);
     end if;
+  -- pragma translate_on    
   end procedure;
 
 end package body logging;
