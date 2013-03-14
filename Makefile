@@ -69,6 +69,7 @@ compile:
 	$(VCOM) $(VCOM_OPTS) -work noasic utils/random.vhd	
 	$(VCOM) $(VCOM_OPTS) -work noasic components/edge_detector.vhd
 	$(VCOM) $(VCOM_OPTS) -work noasic components/synchronizer.vhd
+	$(VCOM) $(VCOM_OPTS) -work noasic components/pipeline_reg.vhd
 	
 	$(VCOM) $(VCOM_OPTS) -work noasic test/tb_frequency.vhd	
 	$(VCOM) $(VCOM_OPTS) -work noasic test/tb_log2.vhd	
@@ -88,6 +89,7 @@ test:
 netlist:
 	echo run -ifn components/edge_detector.vhd -ifmt VHDL -ofn edge_detector.ngc -p Spartan6 | $(XST)
 	echo run -ifn components/synchronizer.vhd -ifmt VHDL -ofn synchronizer.ngc -p Spartan6 | $(XST)
+	echo run -ifn components/pipeline_reg.vhd -ifmt VHDL -ofn synchronizer.ngc -p Spartan6 | $(XST)    
 	
 .PHONY: clean
 clean:
@@ -98,6 +100,7 @@ clean:
 	-rm -rf _xmsgs
 	-rm -f ./edge_detector*.*
 	-rm -f ./synchronizer*.*
+	-rm -f ./pipeline_reg*.*    
 	-rm -f *.asdb
 	-rm -f *.mgf
 	-rm -f *.lib
