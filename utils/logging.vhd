@@ -69,21 +69,35 @@ package body logging is
   -- The allowed logging levels
   type t_logging_level is (DEBUG, INFO, WARNING, ERROR, FAILURE);
 
-  type t_config_entry is record
+  -- A configuration entry for a single logger
+  type t_logging_config_entry is record
     logger : string(1 to MAX_STRING_LENGTH);
     level  : t_logging_level;
   end record;
 
-  type t_config_array is array (0 to MAX_LOGGERS - 1) of t_config_entry;
+  -- A collection of configuration entries for up to MAX_LOGGERS loggers
+  type t_logging_config_array is array (0 to MAX_LOGGERS - 1) of t_logging_config_entry;
 
-  type t_config is protected
+  -- The logging type. Using a protected type for thread safety, as the logging 
+  -- procedures may be called from within different processes.
+  type t_logging is protected
+
+    -- Initialize the logging package using a configuration file
     procedure init(config_filename : string);
+
+    -- Get the current logging level of a given logger
     impure function get_level(logger : string) return t_logging_level;
+
+    -- Output a logging message to the simulator's standard output, provided 
+    -- the given level is greater than or equal to the logger's current 
+    -- logging level
+    procedure trace(level : string; logger : string; message : string);
+
   end protected;
 
-  type t_config is protected body
+  type t_logging is protected body
     variable v_num_config_entries : natural;
-    variable v_config_entries     : t_config_array := (others => ((others => ' '), DEBUG));
+    variable v_config_entries     : t_logging_config_array := (others => ((others => ' '), DEBUG));
 
     procedure init(config_filename : string) is
       file config_file : TEXT;
@@ -91,20 +105,16 @@ package body logging is
       variable v_status : FILE_OPEN_STATUS;
     begin
       v_num_config_entries := 0;
-
       file_open(v_status, config_file, config_filename, READ_MODE);
       assert v_status = OPEN_OK report "ERROR: could not open file " & config_filename severity failure;
-
       while not endfile(config_file) loop
         if v_num_config_entries >= MAX_LOGGERS then
           report "too many loggers" severity warning;
           exit;
         end if;
-
         readline(config_file, v_line);
         assert v_line'length > 0 report "ERROR: file contains an empty line" severity failure;
         v_config_entries(v_num_config_entries).logger(strip(v_line.all)'range) := strip(v_line.all);
-
         readline(config_file, v_line);
         if strip(v_line.all) = string'("debug") then
           v_config_entries(v_num_config_entries).level := DEBUG;
@@ -134,52 +144,52 @@ package body logging is
       return DEBUG;                     -- unknown logger -> use lowest-possible logging level
     end function;
 
+    procedure trace(level : string; logger : string; message : string) is
+    begin
+      print(time'image(now) & ": " & level & ": " & strip(logger) & ": " & message);
+    end procedure;
+
   end protected body;
 
-  shared variable sv_config : t_config;
+  shared variable sv_config : t_logging;
 
   procedure init(config_filename : string) is
   begin
     sv_config.init(config_filename);
   end procedure;
 
-  procedure trace(level : string; logger : string; message : string) is
-  begin
-    print(time'image(now) & ": " & level & ": " & strip(logger) & ": " & message);
-  end procedure;
-
   procedure debug(logger : string; message : string) is
   begin
     if sv_config.get_level(logger) <= DEBUG then
-      trace("DEBUG", logger, message);
+      sv_config.trace("DEBUG", logger, message);
     end if;
   end procedure;
 
   procedure info(logger : string; message : string) is
   begin
     if sv_config.get_level(logger) <= INFO then
-      trace("INFO", logger, message);
+      sv_config.trace("INFO", logger, message);
     end if;
   end procedure;
 
   procedure warning(logger : string; message : string) is
   begin
     if sv_config.get_level(logger) <= WARNING then
-      trace("WARNING", logger, message);
+      sv_config.trace("WARNING", logger, message);
     end if;
   end procedure;
 
   procedure error(logger : string; message : string) is
   begin
     if sv_config.get_level(logger) <= ERROR then
-      trace("ERROR", logger, message);
+      sv_config.trace("ERROR", logger, message);
     end if;
   end procedure;
 
   procedure failure(logger : string; message : string) is
   begin
     if sv_config.get_level(logger) <= FAILURE then
-      trace("FAILURE", logger, message);
+      sv_config.trace("FAILURE", logger, message);
     end if;
   end procedure;
 
