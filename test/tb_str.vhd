@@ -77,8 +77,8 @@ architecture RTL of tb_str is
 
   procedure test_str_unsigned is
   begin
-    assert str(unsigned(x"7fffffff")) = "2147483647" severity failure;
-    assert str(unsigned(x"0")) = "0" severity failure;
+    assert str(to_unsigned(16#7fffffff#, 32)) = "2147483647" severity failure;
+    assert str(to_unsigned(0, 16)) = "0" severity failure;
   end procedure;
 
 begin

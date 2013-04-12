@@ -60,7 +60,7 @@ help:
 
 .PHONY: compile
 compile:
-	$(VLIB) noasic work/noasic.lib
+	$(VLIB) noasic
 	$(VCOM) $(VCOM_OPTS) -work noasic utils/frequency.vhd
 	$(VCOM) $(VCOM_OPTS) -work noasic utils/log2.vhd
 	$(VCOM) $(VCOM_OPTS) -work noasic utils/str.vhd	
