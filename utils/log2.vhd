@@ -49,7 +49,7 @@ end package log2;
 package body log2 is
   function log2(N : positive) return natural is
   begin
-    return integer(ceil(log2(real(N))));
+    return integer(ceil(ieee.math_real.log2(real(N))));
   end function;
 
 end package body log2;
