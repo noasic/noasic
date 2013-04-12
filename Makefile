@@ -41,6 +41,7 @@ VCOM = vcom
 VSIM = vsim
 VLIB = vlib
 VCOM_OPTS = -2002 -d work
+VSIM_OPTS = -t 1ps
 
 XST = "C:/Xilinx/14.3/ISE_DS/ISE/bin/nt64/xst.exe"
 
@@ -79,11 +80,11 @@ compile:
 
 .PHONY: test
 test:
-	$(VSIM) -c noasic.tb_frequency -do "run -all; quit -code 0"
-	$(VSIM) -c noasic.tb_log2 -do "run -all; quit -code 0"
-	$(VSIM) -c noasic.tb_random -do "run -all; quit -code 0"
-	$(VSIM) -c noasic.tb_str -do "run -all; quit -code 0"
-	$(VSIM) -c noasic.tb_logging -do "run -all; quit -code 0"
+	$(VSIM) $(VSIM_OPTS) -c noasic.tb_frequency -do "run -all; quit -code 0"
+	$(VSIM) $(VSIM_OPTS) -c noasic.tb_log2 -do "run -all; quit -code 0"
+	$(VSIM) $(VSIM_OPTS) -c noasic.tb_random -do "run -all; quit -code 0"
+	$(VSIM) $(VSIM_OPTS) -c noasic.tb_str -do "run -all; quit -code 0"
+	$(VSIM) $(VSIM_OPTS) -c noasic.tb_logging -do "run -all; quit -code 0"
 	
 .PHONY: netlist	
 netlist:
