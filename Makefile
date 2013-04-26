@@ -15,7 +15,7 @@
 ##
 ##-----------------------------------------------------------------------------
 ##
-##  Copyright (c) 2012 by the Author(s)
+##  Copyright (c) 2012-2013 by the Author(s)
 ##
 ##  This source file may be used and distributed without restriction provided
 ##  that this copyright statement is not removed from the file and that any
@@ -40,7 +40,7 @@
 VCOM = vcom
 VSIM = vsim
 VLIB = vlib
-VCOM_OPTS = -2002 -d work
+VCOM_OPTS = -2002
 VSIM_OPTS = -t 1ps
 
 XST = "C:/Xilinx/14.3/ISE_DS/ISE/bin/nt64/xst.exe"
@@ -68,15 +68,18 @@ compile:
 	$(VCOM) $(VCOM_OPTS) -work noasic utils/logging.vhd
 	$(VCOM) $(VCOM_OPTS) -work noasic utils/print.vhd
 	$(VCOM) $(VCOM_OPTS) -work noasic utils/random.vhd	
+	$(VCOM) $(VCOM_OPTS) -work noasic utils/waitclk.vhd	
 	$(VCOM) $(VCOM_OPTS) -work noasic components/edge_detector.vhd
 	$(VCOM) $(VCOM_OPTS) -work noasic components/synchronizer.vhd
 	$(VCOM) $(VCOM_OPTS) -work noasic components/pipeline_reg.vhd
+	$(VCOM) $(VCOM_OPTS) -work noasic components/reset_synchronizer.vhd	
 	
 	$(VCOM) $(VCOM_OPTS) -work noasic test/tb_frequency.vhd	
 	$(VCOM) $(VCOM_OPTS) -work noasic test/tb_log2.vhd	
 	$(VCOM) $(VCOM_OPTS) -work noasic test/tb_random.vhd	
 	$(VCOM) $(VCOM_OPTS) -work noasic test/tb_str.vhd	
 	$(VCOM) $(VCOM_OPTS) -work noasic test/tb_logging.vhd
+	$(VCOM) $(VCOM_OPTS) -work noasic test/tb_reset_synchronizer.vhd
 
 .PHONY: test
 test:
@@ -85,12 +88,14 @@ test:
 	$(VSIM) $(VSIM_OPTS) -c noasic.tb_random -do "run -all; quit -code 0"
 	$(VSIM) $(VSIM_OPTS) -c noasic.tb_str -do "run -all; quit -code 0"
 	$(VSIM) $(VSIM_OPTS) -c noasic.tb_logging -do "run -all; quit -code 0"
+	$(VSIM) $(VSIM_OPTS) -c noasic.tb_reset_synchronizer -do "run -all; quit -code 0"
 	
 .PHONY: netlist	
 netlist:
 	echo run -ifn components/edge_detector.vhd -ifmt VHDL -ofn edge_detector.ngc -p Spartan6 | $(XST)
 	echo run -ifn components/synchronizer.vhd -ifmt VHDL -ofn synchronizer.ngc -p Spartan6 | $(XST)
-	echo run -ifn components/pipeline_reg.vhd -ifmt VHDL -ofn synchronizer.ngc -p Spartan6 | $(XST)    
+	echo run -ifn components/pipeline_reg.vhd -ifmt VHDL -ofn pipeline_reg.ngc -p Spartan6 | $(XST)    
+	echo run -ifn components/reset_synchronizer.vhd -ifmt VHDL -ofn reset_synchronizer.ngc -p Spartan6 | $(XST)    
 	
 .PHONY: clean
 clean:
@@ -102,10 +107,12 @@ clean:
 	-rm -f ./edge_detector*.*
 	-rm -f ./synchronizer*.*
 	-rm -f ./pipeline_reg*.*    
+	-rm -f ./reset_synchronizer*.*    
 	-rm -f *.asdb
 	-rm -f *.mgf
 	-rm -f *.lib
 	-rm -rf compile/
+	-rm -rf noasic/
 
 
 	
