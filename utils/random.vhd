@@ -50,16 +50,22 @@ package random is
   -- Waits for a random number of clock cycles
   procedure randwait(signal clk : in std_logic; min, max : in natural);
 
+  -- Returns a random real in the range [min, max]
+  impure function randreal(min, max : real) return real;
+
 end package random;
 
 package body random is
   type t_random is protected
     -- Returns a random integer in the range [min, max]
     impure function randint(min, max : integer) return integer;
+    -- Returns a random real in the range [min, max]
+    impure function randreal(min, max : real) return real;
   end protected;
 
   type t_random is protected body
     variable v_seed_1, v_seed_2 : positive := 1;
+    --
     impure function randint(min, max : integer) return integer is
       variable v_rand_real : real;
       variable v_rand_int  : integer;
@@ -69,6 +75,16 @@ package body random is
       v_rand_int := min + integer(real(max - min) * v_rand_real);
       assert v_rand_int >= min and v_rand_int <= max severity failure;
       return v_rand_int;
+    end function;
+    --
+    impure function randreal(min, max : real) return real is
+      variable v_rand_real : real;
+    begin
+      assert max >= min severity failure;
+      uniform(v_seed_1, v_seed_2, v_rand_real);
+      v_rand_real := min + (max - min) * v_rand_real;
+      assert v_rand_real >= min and v_rand_real <= max severity failure;
+      return v_rand_real;
     end function;
   end protected body;
 
@@ -97,5 +113,10 @@ package body random is
       wait until rising_edge(clk);
     end loop;
   end procedure;
+
+  impure function randreal(min, max : real) return real is
+  begin
+    return sv_random.randreal(min, max);
+  end function;
 
 end package body random;
